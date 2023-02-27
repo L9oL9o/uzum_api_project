@@ -23,6 +23,9 @@ INSTALLED_APPS = [
     'apps.apps.AppsConfig',
     # THIRD PARTY APPS
     'rest_framework',
+    'rest_framework_swagger',
+    'drf_yasg'
+
 ]
 
 MIDDLEWARE = [

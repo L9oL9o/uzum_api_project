@@ -8,12 +8,12 @@ from apps.serializers import SellerModelSerializer, UserModelSerializer, OrdersM
 
 class OrderModelViewSet(ModelViewSet):
     serializer_class = OrdersModelSerializer
-    queryset = Orders.objects.order_by('-created_at')
+    queryset = Orders.objects.order_by()
 
 
 class SellerModelViewSet(ModelViewSet):
     serializer_class = SellerModelSerializer
-    queryset = Seller.objects.order_by('-created_at')
+    queryset = Seller.objects.order_by()
 
 
 class CatalogModelViewSet(ModelViewSet):
@@ -38,9 +38,9 @@ class ProductModelViewSet(ModelViewSet):
 
 class DiscountModelViewSet(ModelViewSet):
     serializer_class = DiscountModelSerializer
-    queryset = Discount.objects.all('-created_at')
+    queryset = Discount.objects.all()
 
 
 class UserModelViewSet(ModelViewSet):
     serializer_class = UserModelSerializer
-    queryset = User.objects.order_by('-created-at')
+    queryset = User.objects.order_by()
