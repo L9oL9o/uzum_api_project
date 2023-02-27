@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     # MY APPS
     'apps.apps.AppsConfig',
     # THIRD PARTY APPS
-
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
