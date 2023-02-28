@@ -3,7 +3,8 @@ mig:
 	python3 manage.py migrate
 
 r:
-	python3 manage.py runserver
+	python3 manage.py runserver 9009
 
 rq:
-	pip freeze > requirements.txt
+	pip freeze >requirements.txt
+

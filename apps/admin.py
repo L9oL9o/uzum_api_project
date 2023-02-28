@@ -9,11 +9,11 @@ class CatalogAdmin(ModelAdmin):
 
 
 class CategoryAdmin(ModelAdmin):
-    list_display = ['category']
+    list_display = ['category', 'catalog']
 
 
 class TypeAdmin(ModelAdmin):
-    list_display = ['type']
+    list_display = ['type', 'category']
 
 
 class UserAdmin(ModelAdmin):
@@ -29,7 +29,7 @@ class SellerAdmin(ModelAdmin):
 
 
 class OrdersAdmin(ModelAdmin):
-    list_display = ['created_at', 'user', 'seller', 'product', 'quantity']
+    list_display = ['created_at', 'status', 'user', 'seller', 'product', 'quantity']
 
 
 class DiscountAdmin(ModelAdmin):

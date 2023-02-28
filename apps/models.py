@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import CharField, ForeignKey, CASCADE, \
-    DecimalField, IntegerField, TextField, Model, EmailField, DateTimeField
+    DecimalField, IntegerField, TextField, Model, EmailField, DateTimeField, TextChoices
 
 
 class Catalog(Model):
@@ -47,6 +47,22 @@ class User(Model):
         db_table = 'User'
 
 
+class Seller(Model):
+    name = CharField(max_length=255)
+    nickname = CharField(max_length=55, unique=True)
+    registered_at = DateTimeField(auto_now_add=True)
+
+    # products = ForeignKey(Products, CASCADE)
+
+    def __str__(self):
+        return f"{self.nickname}"
+
+    class Meta:
+        db_table = "Seller"
+        verbose_name = 'Seller'
+        verbose_name_plural = 'Sellers'
+
+
 class Products(Model):
     name = CharField(max_length=255)
     price = DecimalField(max_digits=9, decimal_places=2)
@@ -54,32 +70,28 @@ class Products(Model):
     short_desc = TextField(max_length=500)
     quantity = IntegerField(default=0)
     type = ForeignKey(Type, CASCADE)
+    seller = ForeignKey(Seller, CASCADE)
 
     def __str__(self):
         return f"{self.name}"
 
     class Meta:
         db_table = 'Products'
-
-
-class Seller(Model):
-    name = CharField(max_length=255)
-    nickname = CharField(max_length=55, unique=True)
-    registered_at = DateTimeField(auto_now_add=True)
-    products = ForeignKey(Products, CASCADE)
-
-    def __str__(self):
-        return f"{self.nickname}"
-
-    class Meta:
-        db_table = "Seller"
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
 
 
 class Orders(Model):
+    class StatusChoice(TextChoices):
+        ORDERED = 'ordered'
+        DELIVERING = 'delivering'
+        DELIVERED = 'delivered'
+
     created_at = DateTimeField(auto_now_add=True)
     user = ForeignKey(User, CASCADE)
     seller = ForeignKey(Seller, CASCADE)
     product = ForeignKey(Products, CASCADE)
+    status = CharField(max_length=55, choices=StatusChoice.choices, default=StatusChoice.ORDERED)
     quantity = IntegerField(default=1)
     price = DecimalField(max_digits=9, decimal_places=2)
 
