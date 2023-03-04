@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-from apps.models import Products, Category, Seller, Catalog, Discount, Orders, User, Type
+from apps.models.categories import Catalog, Category, Type
+from apps.models.customer import Customer
+from apps.models.discounts import Discount
+from apps.models.orders import Orders
+from apps.models.products import Products
+from apps.models.seller import Seller
 
 
 class CatalogAdmin(ModelAdmin):
@@ -16,7 +21,7 @@ class TypeAdmin(ModelAdmin):
     list_display = ['type', 'category']
 
 
-class UserAdmin(ModelAdmin):
+class CustomerAdmin(ModelAdmin):
     list_display = ['name', 'email']
 
 
@@ -39,7 +44,7 @@ class DiscountAdmin(ModelAdmin):
 admin.site.register(Catalog, CatalogAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Type, TypeAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Products, ProductsAdmin)
 admin.site.register(Seller, SellerAdmin)
 admin.site.register(Orders, OrdersAdmin)

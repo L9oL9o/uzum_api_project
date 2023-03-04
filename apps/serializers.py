@@ -1,6 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from apps.models import Seller, Catalog, Category, Type, Products, User, Orders, Discount
+from apps.models.cart import User
+from apps.models.categories import Catalog, Category, Type
+from apps.models.discounts import Discount
+from apps.models.orders import Orders
+from apps.models.products import Products
+from apps.models.seller import Seller
 
 
 class OrdersModelSerializer(ModelSerializer):

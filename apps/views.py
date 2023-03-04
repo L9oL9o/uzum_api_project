@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 
-from apps.models import Seller, User, Orders, Category, Discount, Products, Type, Catalog
+from apps.models.cart import User
+from apps.models.categories import Catalog, Category, Type
+from apps.models.discounts import Discount
+from apps.models.orders import Orders
+from apps.models.products import Products
+from apps.models.seller import Seller
 from apps.serializers import SellerModelSerializer, UserModelSerializer, OrdersModelSerializer, CategoryModelSerializer, \
     DiscountModelSerializer, ProductsModelSerializer, TypeModelSerializer, CatalogModelSerializer
 
