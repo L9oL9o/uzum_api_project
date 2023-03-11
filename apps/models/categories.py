@@ -1,4 +1,4 @@
-from django.db.models import Model, CharField, ForeignKey, CASCADE
+from django.db.models import Model, CharField, ForeignKey, CASCADE, ManyToManyField
 
 
 class Catalog(Model):
@@ -13,7 +13,7 @@ class Catalog(Model):
 
 class Category(Model):
     category = CharField(max_length=255)
-    catalog = ForeignKey(Catalog, CASCADE)
+    catalog = ManyToManyField(Catalog)
 
     def __str__(self):
         return f"{self.category}"

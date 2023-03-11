@@ -18,7 +18,7 @@ class OrderModelViewSet(ModelViewSet):
 
 class SellerModelViewSet(ModelViewSet):
     serializer_class = SellerModelSerializer
-    queryset = Seller.objects.order_by()
+    queryset = Seller.objects.all().order_by('')
 
 
 class CatalogModelViewSet(ModelViewSet):
