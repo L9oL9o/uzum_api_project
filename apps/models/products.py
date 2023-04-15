@@ -1,27 +1,27 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db.models import CharField, ForeignKey, CASCADE, IntegerField, TextField, Model, FloatField
+from django.db import models
+from django.contrib.auth.models import User
 
-from apps.models.categories import Type
-from apps.models.seller import Seller
+from apps.models.product_handbook import Type
 
 
-class Products(Model):
-    name = CharField(max_length=255)
-    price = FloatField(default=0, validators=[
-        MinValueValidator(0),
-        MaxValueValidator(100000000.00)
-    ])
-    desc = TextField(max_length=2500)
-    short_desc = TextField(max_length=500)
-    quantity = IntegerField(default=0)
-    type = ForeignKey(Type, CASCADE)
-    seller = ForeignKey(Seller, CASCADE)
+class Product(models.Model):
+    category = models.ForeignKey(Type, related_name='products', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('name',)
+        index_together = (('id', 'slug'),)
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
+    def get_absolute_url(self):
+        return reverse('shop:product_detail', args=[self.id, self.slug])
 
-class Meta:
-    db_table = 'Products'
-    verbose_name = 'Product'
-    verbose_name_plural = 'Products'

@@ -17,3 +17,4 @@ router.register('discount', DiscountModelViewSet, 'discount')
 urlpatterns = [
     path('router-url/', include(router.urls)),
 ]
+

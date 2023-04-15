@@ -1,56 +1,48 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+from .models import Category, Product, Order, OrderItem
 
-from apps.models.cart import User
-from apps.models.categories import Catalog, Category, Type
-from apps.models.discounts import Discount
-from apps.models.orders import Orders
-from apps.models.products import Products
-from apps.models.seller import Seller
-
-
-class OrdersModelSerializer(ModelSerializer):
-    class Meta:
-        model = Orders
-        exclude = ()
-
-
-class SellerModelSerializer(ModelSerializer):
-    class Meta:
-        model = Seller
-        exclude = ()
-
-
-class CatalogModelSerializer(ModelSerializer):
-    class Meta:
-        model = Catalog
-        exclude = ()
-
-
-class CategoryModelSerializer(ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        exclude = ()
+        fields = '__all__'
 
-
-class TypeModelSerializer(ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Type
-        exclude = ()
+        model = Product
+        fields = '__all__'
 
-
-class ProductsModelSerializer(ModelSerializer):
+class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Products
-        exclude = ()
+        model = OrderItem
+        fields = '__all__'
 
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
 
-class DiscountModelSerializer(ModelSerializer):
     class Meta:
-        model = Discount
-        exclude = ()
+        model = Order
+        fields = ['id', 'user', 'items', 'total_price', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'user', 'total_price', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
+        return order
+
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items')
+        items = (instance.items).all()
+        items = list(items)
+        instance.total_price = validated_data.get('total_price', instance.total_price)
+        instance.save()
+        for item_data in items_data:
+            item = items.pop(0)
+            item.product = item_data.get('product', item.product)
+            item.quantity = item_data.get('quantity', item.quantity)
+            item.price = item_data.get('price', item.price)
+            item.save()
+        return instance
 
 
-class UserModelSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        exclude = ()
